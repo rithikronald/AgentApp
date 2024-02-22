@@ -1,19 +1,14 @@
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import logo from "./assets/images/logo.png";
-import { AddressPage } from "./pages/AddressPage";
-import { BookingStatusPage } from "./pages/BookingStatusPage";
-import { ConfirmBookingPage } from "./pages/ConfirmBookingPage";
-import { DateSelectionPage } from "./pages/DateSelectionPage";
-import { EligibilityFlow } from "./pages/EligibilityFlow";
-import { LoginPage } from "./pages/LoginPage";
-import { ReschedulePage } from "./pages/ReschedulePage";
-import { ThermostatPage } from "./pages/ThermostatPage";
-import { VerifyOtpPage } from "./pages/VerifyOtpPage";
-import { SignUpPage } from "./pages/SignUpPage";
-import { SignUpVerification } from "./pages/SignUpVerification";
 import { Dashboard } from "./pages/Dashboard";
 import { InstallationRequests } from "./pages/InstallationRequests";
+import { LoginPage } from "./pages/LoginPage";
+import { SignUpPage } from "./pages/SignUpPage";
+import { SignUpVerification } from "./pages/SignUpVerification";
+import { VerifyOtpPage } from "./pages/VerifyOtpPage";
+import { MyReservations } from "./pages/MyReservations";
+import { ReservationDetailsPage } from "./pages/ReservationDetailsPage";
 
 const routes = [
   {
@@ -41,32 +36,12 @@ const routes = [
     element: <InstallationRequests />,
   },
   {
-    path: "/details",
-    element: <ThermostatPage />,
+    path: "/my_reservations",
+    element: <MyReservations />,
   },
   {
-    path: "/address",
-    element: <AddressPage />,
-  },
-  {
-    path: "/slot_selection",
-    element: <DateSelectionPage />,
-  },
-  {
-    path: "/confirm_booking",
-    element: <ConfirmBookingPage />,
-  },
-  {
-    path: "/booking_status",
-    element: <BookingStatusPage />,
-  },
-  {
-    path: "/eligibility_check",
-    element: <EligibilityFlow />,
-  },
-  {
-    path: "/reschedule_booking",
-    element: <ReschedulePage />,
+    path: "/reservation_details",
+    element: <ReservationDetailsPage />,
   },
 ];
 

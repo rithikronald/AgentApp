@@ -1,7 +1,5 @@
 import { Header } from "@/components/custom/Header";
 import { InstallationDetailsCard } from "@/components/custom/InstallationDetailsCard";
-import { RequestCardRows } from "@/components/custom/RequestCardRows";
-import { Button } from "@/components/ui/button";
 
 export const InstallationRequests = () => {
   return (

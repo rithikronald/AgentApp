@@ -11,6 +11,9 @@ import { ReschedulePage } from "./pages/ReschedulePage";
 import { ThermostatPage } from "./pages/ThermostatPage";
 import { VerifyOtpPage } from "./pages/VerifyOtpPage";
 import { SignUpPage } from "./pages/SignUpPage";
+import { SignUpVerification } from "./pages/SignUpVerification";
+import { Dashboard } from "./pages/Dashboard";
+import { InstallationRequests } from "./pages/InstallationRequests";
 
 const routes = [
   {
@@ -24,6 +27,18 @@ const routes = [
   {
     path: "/register",
     element: <SignUpPage />,
+  },
+  {
+    path: "/verify_registration",
+    element: <SignUpVerification />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+  },
+  {
+    path: "/installation_requests",
+    element: <InstallationRequests />,
   },
   {
     path: "/details",

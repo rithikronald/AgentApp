@@ -9,6 +9,8 @@ import { SignUpVerification } from "./pages/SignUpVerification";
 import { VerifyOtpPage } from "./pages/VerifyOtpPage";
 import { MyReservations } from "./pages/MyReservations";
 import { ReservationDetailsPage } from "./pages/ReservationDetailsPage";
+import { CompletedReservations } from "./pages/CompletedReservations";
+import { ProfilePage } from "./pages/ProfilePage";
 
 const routes = [
   {
@@ -42,6 +44,14 @@ const routes = [
   {
     path: "/reservation_details",
     element: <ReservationDetailsPage />,
+  },
+  {
+    path: "/completed_reservations",
+    element: <CompletedReservations />,
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
   },
 ];
 

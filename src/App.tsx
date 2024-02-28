@@ -11,6 +11,8 @@ import { MyReservations } from "./pages/MyReservations";
 import { ReservationDetailsPage } from "./pages/ReservationDetailsPage";
 import { CompletedReservations } from "./pages/CompletedReservations";
 import { ProfilePage } from "./pages/ProfilePage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const routes = [
   {
@@ -64,6 +66,7 @@ const makeRoutes = () => {
           path={route.path}
           element={
             <Suspense fallback={<div data-stage></div>}>
+              <ToastContainer />
               {route.element}
             </Suspense>
           }

@@ -3,11 +3,54 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import countries from "../utils/constants/countries.json";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { BASE_URL } from "@/utils/apiEndpoint";
+import { LoaderButton } from "@/components/custom/loaderButton";
+import {
+  extractCountryCode,
+  retrieveNumberFromString,
+} from "@/utils/helperfunction";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [countryName, setCountryName] = useState("🇫🇷 (+33)");
+  const [phoneNumber, setPhoneNumber] = useState("8825560958");
+  // const [countryName, setCountryName] = useState("🇫🇷 (+33)");
+  const [countryName, setCountryName] = useState("🇮🇳 (+91)");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getOtp = () => {
+    const number = `${extractCountryCode(countryName)} ${phoneNumber}`;
+    console.log("Number", number);
+    axios
+      .post(BASE_URL + "/verify/send-code", {
+        phone_number: number,
+      })
+      .then((res) => {
+        console.log("RESPONSE", res?.data);
+        toast.success("Otp sent successfully.");
+        navigate("/verify_otp", {
+          state: {
+            phone: `${retrieveNumberFromString(countryName)}${phoneNumber}`,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log("ERROR: GET OTP", err);
+        toast.error("Error sending Otp, Please try again.");
+        setIsLoading(false);
+      });
+  };
+
+  const validation = () => {
+    setIsLoading(true);
+    if (phoneNumber.length == 10) {
+      getOtp();
+    } else {
+      toast.error("Please enter a valid number.");
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-1 flex-col justify-evenly items-center md:h-[70%]">
@@ -39,15 +82,13 @@ export const LoginPage = () => {
             className="rounded-l-none h-14 focus-visible:ring-0"
           />
         </div>
-        <Button
-          onClick={() => {
-            navigate("/verify_otp");
-          }}
-          type="submit"
+        <LoaderButton
+          isLoading={isLoading}
+          onClick={validation}
           className="rounded-full w-full mt-4"
         >
           Obtenir OTP
-        </Button>
+        </LoaderButton>
         <Button
           onClick={() => {
             navigate("/register");

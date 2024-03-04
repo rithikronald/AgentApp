@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export interface ReservationDataObjectType {
+export interface BookingObjectType {
   _id: string;
+  booking_id: string;
   address: string;
   thermostat_count: number;
   time_slot: number;
@@ -25,7 +26,7 @@ export interface ReservationDataObjectType {
   created_date: string;
   latitude: number;
   longitude: number;
-  distance: number;
+  distance: number | null;
 }
 
 export const MyReservations = () => {
@@ -33,29 +34,28 @@ export const MyReservations = () => {
   const {
     state: { agent_id },
   } = useLocation();
-  const [reservationData, setReservationData] = useState<
-    ReservationDataObjectType[]
-  >([
+  const [reservationData, setReservationData] = useState<BookingObjectType[]>([
     {
-      _id: "",
-      address: "",
-      thermostat_count: 0,
-      time_slot: 0,
-      phone_number: "",
-      email: "",
-      first_name: "",
-      last_name: "",
+      _id: "s65e5dd254c22eb272347723e",
+      booking_id: "65976",
+      address: "Chennai",
+      thermostat_count: 3,
+      time_slot: 3,
+      phone_number: "+9198348839475",
+      email: "pal@gmail.com",
+      first_name: "pal",
+      last_name: "manikam",
       agent_info: {
-        agent_id: "",
-        agent_name: "",
-        agent_phone: "",
+        agent_id: "65e5dbca4c22eb272347723c",
+        agent_name: "pradeep kumar",
+        agent_phone: "+919839456738",
       },
       rescheduled: false,
-      date: "",
-      created_date: "",
-      latitude: 0,
-      longitude: 0,
-      distance: 0,
+      date: "2024-03-04T14:39:22.039Z",
+      created_date: "2024-03-04T14:39:22.039Z",
+      latitude: 13.0836939,
+      longitude: 80.270186,
+      distance: null,
     },
   ]);
 
@@ -84,17 +84,15 @@ export const MyReservations = () => {
           Mes Réservations
         </p>
         {reservationData &&
-          reservationData?.map(
-            (item: ReservationDataObjectType, index: number) => {
-              return (
-                <MyReservationCard
-                  key={index}
-                  data={item}
-                  onClick={() => navigate("/reservation_details")}
-                />
-              );
-            }
-          )}
+          reservationData?.map((item: BookingObjectType, index: number) => {
+            return (
+              <MyReservationCard
+                key={index}
+                data={item}
+                onClick={() => navigate("/reservation_details")}
+              />
+            );
+          })}
       </div>
     </div>
   );

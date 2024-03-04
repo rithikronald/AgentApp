@@ -2,13 +2,13 @@ import { RequestCardRows } from "./RequestCardRows";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 import { Button } from "../ui/button";
-import { ReservationDataObjectType } from "@/pages/MyReservations";
+import { BookingObjectType } from "@/pages/MyReservations";
 import moment from "moment";
 import { slotMapping } from "@/utils/constants/data";
 import { useState } from "react";
 
 interface MyReservationCardProps {
-  data: ReservationDataObjectType;
+  data: BookingObjectType;
   isDetailsPage?: boolean;
   onClick?: () => void;
 }
@@ -24,7 +24,10 @@ export const MyReservationCard = ({
     <div className="flex flex-col space-y-4 mt-5">
       <div className="flex flex-col rounded-xl bg-[#F8FAFC] p-2">
         <div className="flex flex-col space-y-2">
-          <RequestCardRows title="Numéro de réservation:" value={data?._id} />
+          <RequestCardRows
+            title="Numéro de réservation:"
+            value={data?.booking_id}
+          />
           <RequestCardRows
             title="Fente:"
             value={`${moment(data?.date).format("L")} ${

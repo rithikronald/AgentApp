@@ -1,9 +1,15 @@
-export const TimeLine = () => {
+import moment from "moment";
+
+interface TimeLineProps {
+  bookingData: unknown;
+}
+
+export const TimeLine = ({ bookingData }: TimeLineProps) => {
   return (
     <div className="flex gap-x-3">
       <div className="w-16 text-end">
         <span className="text-xs text-gray-500 dark:text-gray-400">
-          12:05PM
+          {moment(bookingData?.date).format("hh:mm A")}
         </span>
       </div>
       <div className="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-gray-700">
@@ -13,16 +19,16 @@ export const TimeLine = () => {
       </div>
       <div className="grow pt-0.5 pb-8">
         <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
-          Booking ID: 38782632
+          Booking ID: {bookingData?.booking_id}
         </h3>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          213, collins road, paris, 768881
+          {bookingData?.address}
         </p>
         <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
-          James Collins
+          {bookingData?.first_name} {bookingData?.last_name}
         </h3>
         <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
-          +33 58 85 70 40
+          {bookingData?.phone_number}
         </h3>
         {/* <button
               type="button"

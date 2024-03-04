@@ -1,33 +1,51 @@
-import React from "react";
 import { RequestCardRows } from "./RequestCardRows";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 import { Button } from "../ui/button";
+import { ReservationDataObjectType } from "@/pages/MyReservations";
+import moment from "moment";
+import { slotMapping } from "@/utils/constants/data";
+import { useState } from "react";
 
 interface MyReservationCardProps {
+  data: ReservationDataObjectType;
   isDetailsPage?: boolean;
   onClick?: () => void;
 }
 
 export const MyReservationCard = ({
+  data,
   isDetailsPage,
   onClick,
 }: MyReservationCardProps) => {
+  const [confirmStatus, setConfirmStatus] = useState(true);
+
   return (
     <div className="flex flex-col space-y-4 mt-5">
       <div className="flex flex-col rounded-xl bg-[#F8FAFC] p-2">
         <div className="flex flex-col space-y-2">
-          <RequestCardRows title="Numéro de réservation:" value="522558" />
-          <RequestCardRows title="Fente:" value="12/02/2024 12:00 am" />
-          <RequestCardRows title="Non. De ̦thermostats:" value="5" />
-          <RequestCardRows title="Nom:" value="Marie" />
+          <RequestCardRows title="Numéro de réservation:" value={data?._id} />
           <RequestCardRows
-            title="Adresse:"
-            value="rue 31, rue des canaries Paris"
+            title="Fente:"
+            value={`${moment(data?.date).format("L")} ${
+              slotMapping[data?.time_slot]
+            }`}
           />
-          <RequestCardRows title="Contact:" value="+33 58 55 88 00" />
-          <RequestCardRows title="Distance:" value="5.7 KM" />
-          <p className="text-black font-normal font-semibold">confirmé</p>
+          <RequestCardRows
+            title="Non. De ̦thermostats:"
+            value={data?.thermostat_count.toString()}
+          />
+          <RequestCardRows
+            title="Nom:"
+            value={`${data?.first_name} ${data?.last_name}`}
+          />
+          <RequestCardRows title="Adresse:" value={data?.address} />
+          <RequestCardRows title="Contact:" value={data?.phone_number} />
+          <RequestCardRows
+            title="Distance:"
+            value={data?.distance?.toString()}
+          />
+          <p className="text-black font-semibold">confirmé</p>
           {isDetailsPage ? (
             <div className="flex items-center space-x-2">
               <Label>En dehors</Label>
@@ -37,7 +55,12 @@ export const MyReservationCard = ({
           ) : (
             <div className="flex items-center space-x-2">
               <Label>Non non</Label>
-              <Switch />
+              <Switch
+                checked={confirmStatus}
+                onClick={() => {
+                  setConfirmStatus((prev) => !prev);
+                }}
+              />
               <Label>Oui oui</Label>
             </div>
           )}
@@ -45,7 +68,7 @@ export const MyReservationCard = ({
             <p className="text-black">Télécharger l’image de l’installation</p>
           ) : (
             <Button
-              onClick={() => onClick()}
+              onClick={onClick}
               className="rounded-full w-[60%] self-center"
             >
               Voir la

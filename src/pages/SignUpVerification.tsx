@@ -1,12 +1,40 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { BASE_URL } from "@/utils/apiEndpoint";
+import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const SignUpVerification = () => {
+  const {
+    state: { phone, userData },
+  } = useLocation();
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
+
+  const verifyOtp = () => {
+    axios
+      .post(
+        BASE_URL + `agents/verify/check-code/?phone=%2B${phone}&code=${otp}`,
+        {
+          userData,
+        }
+      )
+      .then((res) => {
+        console.log("RESPONSE", res?.data);
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        console.log("ERROR: GET OTP", err);
+      });
+  };
+
+  const validation = () => {
+    if (otp) {
+      verifyOtp();
+    }
+  };
 
   return (
     <div className="flex flex-1 flex-col justify-evenly items-center md:h-[70%]">
@@ -29,9 +57,7 @@ export const SignUpVerification = () => {
           </label>
         </div>
         <Button
-          onClick={() => {
-            navigate("/dashboard");
-          }}
+          onClick={validation}
           type="submit"
           className="rounded-full w-full mt-4"
         >

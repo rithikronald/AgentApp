@@ -13,27 +13,40 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import countries from "../utils/constants/countries.json";
 import { useState } from "react";
+import {
+  extractCountryCode,
+  retrieveNumberFromString,
+} from "@/utils/helperfunction";
+import axios from "axios";
+import { BASE_URL } from "@/utils/apiEndpoint";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { LoaderButton } from "@/components/custom/loaderButton";
 
 export const SignUpPage = () => {
-  const [countryName, setCountryName] = useState("");
+  const navigate = useNavigate();
+  const [countryName, setCountryName] = useState("🇮🇳 (+91)");
+  const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState();
+
   const formSchema = z.object({
-    firstName: z.string().min(2, {
-      message: "First name must be at least 5 characters.",
+    first_name: z.string().min(2, {
+      message: "Prénom must be at least 5 characters.",
     }),
-    lastName: z.string().min(5, {
-      message: "Last name must be at least 5 characters.",
+    last_name: z.string().min(5, {
+      message: "Nom de famille must be at least 5 characters.",
     }),
-    businessName: z.string().min(5, {
-      message: "Last name must be at least 5 characters.",
+    business_name: z.string().min(5, {
+      message: "Business Name must be at least 5 characters.",
     }),
-    taxId: z.string().min(5, {
-      message: "Last name must be at least 5 characters.",
+    tax_id: z.string().min(5, {
+      message: "Tax ID must be at least 5 characters.",
     }),
-    serviceArea: z.string().min(5, {
-      message: "Address field must be at least 5 characters.",
+    service_area: z.string().min(5, {
+      message: "Service Area field must be at least 5 characters.",
     }),
     email: z.string().email(),
-    phoneNumber: z.string().min(10, {
+    phone: z.string().min(10, {
       message: "Number must be at least 10 digits.",
     }),
   });
@@ -42,10 +55,40 @@ export const SignUpPage = () => {
     resolver: zodResolver(formSchema),
   });
 
+  const getOtp = (phoneNumber: string) => {
+    const number = `${extractCountryCode(countryName)} ${phoneNumber}`;
+    console.log("Number", number);
+    axios
+      .post(BASE_URL + "/verify/send-code", {
+        phone_number: number,
+      })
+      .then((res) => {
+        console.log("RESPONSE", res?.data);
+        toast.success("Otp sent successfully.");
+        navigate("/verify_registration", {
+          state: {
+            phone: `${retrieveNumberFromString(countryName)}${phoneNumber}`,
+            userData: userData,
+          },
+        });
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log("ERROR: GET OTP", err);
+        toast.error("Error sending Otp, Please try again.");
+      });
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log("VALUES", values);
+    if (values) {
+      setIsLoading(true);
+      console.log("COUNTRY CODE", countryName);
+      setUserData(values);
+      getOtp(values?.phone);
+    }
   };
 
   return (
@@ -60,7 +103,7 @@ export const SignUpPage = () => {
               </Button> */}
               <FormField
                 control={form.control}
-                name="firstName"
+                name="first_name"
                 render={({ field }) => (
                   <FormItem className="md:w-[49%] mt-2">
                     <FormLabel className="text-muted-foreground">
@@ -79,7 +122,7 @@ export const SignUpPage = () => {
               />
               <FormField
                 control={form.control}
-                name="lastName"
+                name="last_name"
                 render={({ field }) => (
                   <FormItem className="md:w-[49%] mt-2">
                     <FormLabel className="text-muted-foreground">
@@ -100,7 +143,7 @@ export const SignUpPage = () => {
             <div className="flex flex-col md:justify-between md:flex-row">
               <FormField
                 control={form.control}
-                name="businessName"
+                name="business_name"
                 render={({ field }) => (
                   <FormItem className="md:w-[49%] mt-2">
                     <FormLabel className="text-muted-foreground">
@@ -115,7 +158,7 @@ export const SignUpPage = () => {
               />
               <FormField
                 control={form.control}
-                name="taxId"
+                name="tax_id"
                 render={({ field }) => (
                   <FormItem className="md:w-[49%] mt-2">
                     <FormLabel className="text-muted-foreground">
@@ -132,7 +175,7 @@ export const SignUpPage = () => {
             <div className="flex flex-col md:justify-between md:flex-row">
               <FormField
                 control={form.control}
-                name="serviceArea"
+                name="service_area"
                 render={({ field }) => (
                   <FormItem className="md:w-[49%] mt-2">
                     <FormLabel className="text-muted-foreground">
@@ -164,7 +207,7 @@ export const SignUpPage = () => {
             <div className="flex flex-col md:justify-between md:flex-row">
               <FormField
                 control={form.control}
-                name="phoneNumber"
+                name="phone"
                 render={({ field }) => (
                   <FormItem className="md:w-[49%] mt-2">
                     <FormLabel className="text-muted-foreground">
@@ -203,9 +246,14 @@ export const SignUpPage = () => {
               />
             </div>
             <div className="flex justify-center mt-10 mb-10 ">
-              <Button className="w-[200px] rounded-full" type="submit">
+              <LoaderButton
+                onClick={() => {}}
+                isLoading={isLoading}
+                className="w-[200px] rounded-full"
+                type="submit"
+              >
                 Créer un nouveau compte
-              </Button>
+              </LoaderButton>
             </div>
           </form>
         </Form>

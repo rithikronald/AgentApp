@@ -8,6 +8,7 @@ type LoaderButtonProps = ButtonProps & {
   children: React.ReactNode;
   className?: string;
   onClick: () => void;
+  type?: string;
 };
 
 export const LoaderButton = ({
@@ -15,9 +16,15 @@ export const LoaderButton = ({
   children,
   className,
   onClick,
+  type,
 }: LoaderButtonProps) => {
   return (
-    <Button onClick={onClick} className={className} disabled={isLoading}>
+    <Button
+      onClick={onClick}
+      type={type}
+      className={className}
+      disabled={isLoading}
+    >
       {isLoading ? (
         <Bars
           height="14"

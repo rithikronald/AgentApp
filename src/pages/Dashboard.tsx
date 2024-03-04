@@ -17,9 +17,27 @@ export const Dashboard = () => {
           >
             Demandes d’installation
           </Button>
-          <Button className="flex h-16">Mes Réservations</Button>
-          <Button className="flex h-16">Réservations complétées</Button>
-          <Button className="flex h-16">Profile</Button>
+          <Button
+            onClick={() =>
+              navigate("/my_reservations", {
+                state: {
+                  agent_id: "",
+                },
+              })
+            }
+            className="flex h-16"
+          >
+            Mes Réservations
+          </Button>
+          <Button
+            onClick={() => navigate("/completed_reservations")}
+            className="flex h-16"
+          >
+            Réservations complétées
+          </Button>
+          <Button onClick={() => navigate("/profile")} className="flex h-16">
+            Profile
+          </Button>
         </div>
       </div>
       <div className="flex flex-col mt-10">

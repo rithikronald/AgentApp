@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [agentId, setAgentId] = useState("65e5dbca4c22eb272347723c");
   const [todaysBookingList, setTodaysBookingList] = useState([
     {
       _id: "s65e5dd254c22eb272347723e",
@@ -64,7 +65,7 @@ export const Dashboard = () => {
             onClick={() =>
               navigate("/installation_requests", {
                 state: {
-                  agent_id: "",
+                  agent_id: agentId,
                 },
               })
             }
@@ -76,7 +77,7 @@ export const Dashboard = () => {
             onClick={() =>
               navigate("/my_reservations", {
                 state: {
-                  agent_id: "",
+                  agent_id: agentId,
                 },
               })
             }
@@ -85,7 +86,13 @@ export const Dashboard = () => {
             Mes Réservations
           </Button>
           <Button
-            onClick={() => navigate("/completed_reservations")}
+            onClick={() =>
+              navigate("/completed_reservations", {
+                state: {
+                  agent_id: agentId,
+                },
+              })
+            }
             className="flex h-16"
           >
             Réservations complétées

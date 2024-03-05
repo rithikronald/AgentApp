@@ -3,9 +3,9 @@ import { ReservationCompletedCard } from "@/components/custom/ReservationComplet
 import { BASE_URL } from "@/utils/apiEndpoint";
 import axios from "axios";
 import { useState } from "react";
-import { BookingObjectType } from "./MyReservations";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { BookingObjectType } from "./MyReservations";
 
 export const CompletedReservations = () => {
   const navigate = useNavigate();
@@ -56,7 +56,9 @@ export const CompletedReservations = () => {
         <p className="text-black font-semibold text-2xl text-center">
           Réservations complétées
         </p>
-        <ReservationCompletedCard />
+        {bookingsList?.map((item, index) => {
+          return <ReservationCompletedCard bookingData={item} key={index} />;
+        })}
       </div>
     </div>
   );

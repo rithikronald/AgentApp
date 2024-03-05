@@ -11,49 +11,25 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [agentId, setAgentId] = useState("65e5dbca4c22eb272347723c");
-  const [todaysBookingList, setTodaysBookingList] = useState([
-    {
-      _id: "s65e5dd254c22eb272347723e",
-      booking_id: "65976",
-      address: "Chennai",
-      thermostat_count: 3,
-      time_slot: 4,
-      phone_number: "+9198348839475",
-      email: "pal@gmail.com",
-      first_name: "pal",
-      last_name: "manikam",
-      agent_info: {
-        agent_id: "65e5dbca4c22eb272347723c",
-        agent_name: "pradeep kumar",
-        agent_phone: "+919839456738",
-      },
-      rescheduled: false,
-      date: "2024-03-04T14:39:22.039Z",
-      created_date: "2024-03-04T14:39:22.039Z",
-      latitude: 13.0836939,
-      longitude: 80.270186,
-      distance: null,
-    },
-  ]);
+  const [todaysBookingList, setTodaysBookingList] = useState();
 
   const getTodaysBooking = () => {
     axios
-      .get(
-        BASE_URL + "/agents/65e5dbca4c22eb272347723c/bookings/assigned/today"
-      )
+      .get(BASE_URL + `/agents/${agentId}/bookings/assigned/today`)
       .then((res) => {
-        console.log("RESPONSE", res?.data);
+        console.log("RESPONSE: todays bookings", res?.data);
+        setTodaysBookingList(res?.data);
       })
       .catch((err) => {
-        console.log("ERROR: GET OTP", err);
-        toast.error("Error sending Otp, Please try again.");
+        console.log("ERROR: GET TodaysBooking", err);
         setIsLoading(false);
       });
   };
 
-  // useEffect(() => {
-  //   getTodaysBooking();
-  // }, []);
+  useEffect(() => {
+    localStorage.setItem("agentId", agentId);
+    getTodaysBooking();
+  }, []);
 
   return (
     <div className="flex flex-1 flex-col  md:h-[70%] md:w-[50%] md:items-center">
@@ -105,9 +81,15 @@ export const Dashboard = () => {
       <div className="flex flex-col mt-10">
         <p className="text-black font-semibold text-2xl">Horaire du jour</p>
         <div className="flex flex-col mt-4">
-          {todaysBookingList?.map((item, index) => {
-            return <TimeLine key={index} bookingData={item} />;
-          })}
+          {todaysBookingList ? (
+            todaysBookingList?.map((item, index) => {
+              return <TimeLine key={index} bookingData={item} />;
+            })
+          ) : (
+            <p className="text-black font-semibold text-lg">
+              There are no booking assigned for today
+            </p>
+          )}
         </div>
       </div>
     </div>

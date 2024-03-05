@@ -1,21 +1,47 @@
+import { BookingObjectType } from "@/pages/MyReservations";
+import { BASE_URL } from "@/utils/apiEndpoint";
+import { slotMapping } from "@/utils/constants/data";
+import axios from "axios";
+import moment from "moment";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { Button } from "../ui/button";
 import { ConfirmationModal } from "./ConfirmationModal";
 import { RequestCardRows } from "./RequestCardRows";
 import { SuccessModal } from "./SuccessModal";
-import { slotMapping } from "@/utils/constants/data";
-import moment from "moment";
-import { BookingObjectType } from "@/pages/MyReservations";
 
 interface InstallationDetailsCardProps {
   bookingData: BookingObjectType;
+  onConfirmBooking: () => void;
 }
 
 export const InstallationDetailsCard = ({
   bookingData,
+  onConfirmBooking,
 }: InstallationDetailsCardProps) => {
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+
+  const confirmBooking = () => {
+    const agent_id = localStorage.getItem("agentId");
+    const booking_id = bookingData._id;
+    console.log("AGENT & BOOKING ID", agent_id, "  ", booking_id);
+    if (agent_id && booking_id)
+      axios
+        .put(BASE_URL + `/agents/${agent_id}/assign/${booking_id}`)
+        .then((res) => {
+          console.log("RESPONSE: Assign booking to agent", res?.data);
+          onConfirmBooking();
+          setOpenConfirmationModal(false);
+          setOpenSuccessModal(true);
+          toast.success("Booking assigned successfully");
+        })
+        .catch((err) => {
+          console.log("ERROR: Assign booking to agent", err);
+          toast.error("Something went wrong, please try again.");
+        });
+  };
+
   return (
     <div className="flex flex-col rounded-xl bg-[#F8FAFC] p-2">
       <div className="flex flex-col space-y-2">
@@ -51,11 +77,11 @@ export const InstallationDetailsCard = ({
         </Button>
       </div>
       <ConfirmationModal
+        bookingData={bookingData}
         openModal={openConfirmationModal}
         onClose={() => setOpenConfirmationModal(false)}
         onConfirm={() => {
-          setOpenConfirmationModal(false);
-          setOpenSuccessModal(true);
+          confirmBooking();
         }}
       />
       <SuccessModal

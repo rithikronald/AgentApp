@@ -34,46 +34,24 @@ export const MyReservations = () => {
   const {
     state: { agent_id },
   } = useLocation();
-  const [reservationData, setReservationData] = useState<BookingObjectType[]>([
-    {
-      _id: "s65e5dd254c22eb272347723e",
-      booking_id: "65976",
-      address: "Chennai",
-      thermostat_count: 3,
-      time_slot: 3,
-      phone_number: "+9198348839475",
-      email: "pal@gmail.com",
-      first_name: "pal",
-      last_name: "manikam",
-      agent_info: {
-        agent_id: "65e5dbca4c22eb272347723c",
-        agent_name: "pradeep kumar",
-        agent_phone: "+919839456738",
-      },
-      rescheduled: false,
-      date: "2024-03-04T14:39:22.039Z",
-      created_date: "2024-03-04T14:39:22.039Z",
-      latitude: 13.0836939,
-      longitude: 80.270186,
-      distance: null,
-    },
-  ]);
+  const [reservationData, setReservationData] = useState<BookingObjectType[]>();
 
-  const getReservations = () => {
+  const getBookings = () => {
     axios
       .get(BASE_URL + `/agents/${agent_id}/bookings`)
       .then((res) => {
-        console.log("RESPONSE", res?.data);
+        console.log("RESPONSE: agent bookings", res?.data);
         setReservationData(res?.data);
       })
       .catch((err) => {
-        console.log("ERROR: GET OTP", err);
-        toast.error("Error sending Otp, Please try again.");
+        console.log("ERROR: agent bookings", err);
       });
   };
 
   useEffect(() => {
-    // if (agent_id) getReservations();
+    if (agent_id) {
+      getBookings();
+    }
   }, [agent_id]);
 
   return (
@@ -88,8 +66,15 @@ export const MyReservations = () => {
             return (
               <MyReservationCard
                 key={index}
+                showSwitch={true}
                 data={item}
-                onClick={() => navigate("/reservation_details")}
+                onClick={() =>
+                  navigate("/reservation_details", {
+                    state: {
+                      bookingData: item,
+                    },
+                  })
+                }
               />
             );
           })}

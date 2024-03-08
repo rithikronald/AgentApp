@@ -9,13 +9,13 @@ import { useState } from "react";
 
 interface MyReservationCardProps {
   data: BookingObjectType;
-  isDetailsPage?: boolean;
+  showSwitch?: boolean;
   onClick?: () => void;
 }
 
 export const MyReservationCard = ({
   data,
-  isDetailsPage,
+  showSwitch,
   onClick,
 }: MyReservationCardProps) => {
   const [confirmStatus, setConfirmStatus] = useState(true);
@@ -48,34 +48,26 @@ export const MyReservationCard = ({
             title="Distance:"
             value={data?.distance?.toString()}
           />
-          <p className="text-black font-semibold">confirmé</p>
-          {isDetailsPage ? (
-            <div className="flex items-center space-x-2">
-              <Label>En dehors</Label>
-              <Switch />
-              <Label>Sur le</Label>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-2">
-              <Label>Non non</Label>
-              <Switch
-                checked={confirmStatus}
-                onClick={() => {
-                  setConfirmStatus((prev) => !prev);
-                }}
-              />
-              <Label>Oui oui</Label>
-            </div>
-          )}
-          {isDetailsPage ? (
-            <p className="text-black">Télécharger l’image de l’installation</p>
-          ) : (
-            <Button
-              onClick={onClick}
-              className="rounded-full w-[60%] self-center"
-            >
-              Voir la
-            </Button>
+          {showSwitch && (
+            <>
+              <p className="text-black font-semibold">confirmé</p>
+              <div className="flex items-center space-x-2">
+                <Label>Non non</Label>
+                <Switch
+                  checked={confirmStatus}
+                  onClick={() => {
+                    setConfirmStatus((prev) => !prev);
+                  }}
+                />
+                <Label>Oui oui</Label>
+              </div>
+              <Button
+                onClick={onClick}
+                className="rounded-full w-[60%] self-center"
+              >
+                Voir la
+              </Button>
+            </>
           )}
         </div>
       </div>

@@ -1,5 +1,5 @@
-import { Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Suspense, useEffect, useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import logo from "./assets/images/logo.png";
 import { Dashboard } from "./pages/Dashboard";
 import { InstallationRequests } from "./pages/InstallationRequests";
@@ -13,10 +13,20 @@ import { CompletedReservations } from "./pages/CompletedReservations";
 import { ProfilePage } from "./pages/ProfilePage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { BASE_URL } from "./utils/apiEndpoint";
+import { Bars } from "react-loader-spinner";
+
+export const watt_connect_instance = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 const routes = [
   {
-    path: "/",
+    path: "/login",
     element: <LoginPage />,
   },
   {
@@ -32,7 +42,7 @@ const routes = [
     element: <SignUpVerification />,
   },
   {
-    path: "/dashboard",
+    path: "/",
     element: <Dashboard />,
   },
   {
@@ -77,6 +87,28 @@ const makeRoutes = () => {
 };
 
 function App() {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  async function onAuthStateChanged(token: string) {
+    if (token) {
+      console.log("Token", token);
+      console.log("Agent Id", localStorage.getItem("agent_id"));
+      watt_connect_instance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+      // navigate("/");
+      setIsLoading(false);
+    } else {
+      navigate("/login");
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    onAuthStateChanged(token);
+  }, []);
+
   return (
     <div className="flex flex-1 flex-col w-full h-[100vh] p-4">
       <div className="flex justify-between bg-[#E2E8F0] h-18 py-2 rounded-lg px-4">
@@ -84,7 +116,25 @@ function App() {
           <img src={logo} className="h-[25px]" />
         </div>
       </div>
-      <div className="flex flex-1"> {makeRoutes()} </div>
+
+      <div className="flex flex-1">
+        {!isLoading ? (
+          makeRoutes()
+        ) : (
+          <div className="flex flex-col w-full h-[100vh] items-center justify-center">
+            <Bars
+              height="40"
+              width="40"
+              color="#269BA3"
+              ariaLabel="bars-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+              visible={true}
+            />
+            <p className="text-black mt-3 ml-2">Loading... </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

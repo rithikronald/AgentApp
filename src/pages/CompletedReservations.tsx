@@ -1,9 +1,8 @@
+import { watt_connect_instance } from "@/App";
 import { Header } from "@/components/custom/Header";
 import { ReservationCompletedCard } from "@/components/custom/ReservationCompletedCard";
-import { BASE_URL } from "@/utils/apiEndpoint";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BookingObjectType } from "./MyReservations";
 
@@ -12,10 +11,10 @@ export const CompletedReservations = () => {
   const [bookingsList, setBookingsList] = useState<BookingObjectType[]>();
 
   const getBookings = () => {
-    const agent_id = localStorage.getItem("agentId");
+    const agent_id = localStorage.getItem("agent_id");
     if (agent_id) {
-      axios
-        .get(BASE_URL + `/agents/${agent_id}/bookings/completed`)
+      watt_connect_instance
+        .get(`/agents/${agent_id}/bookings/completed`)
         .then((res) => {
           console.log("RESPONSE: Completed Booking", res?.data);
         })

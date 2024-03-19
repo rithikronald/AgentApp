@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { watt_connect_instance } from "@/App";
+import { LoaderButton } from "@/components/custom/loaderButton";
 import {
   Form,
   FormControl,
@@ -8,26 +9,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import countries from "../utils/constants/countries.json";
-import { useState } from "react";
 import {
   extractCountryCode,
   retrieveNumberFromString,
 } from "@/utils/helperfunction";
-import axios from "axios";
-import { BASE_URL } from "@/utils/apiEndpoint";
-import { toast } from "react-toastify";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { LoaderButton } from "@/components/custom/loaderButton";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import countries from "../utils/constants/countries.json";
 
 export const SignUpPage = () => {
   const navigate = useNavigate();
   const [countryName, setCountryName] = useState("🇮🇳 (+91)");
   const [isLoading, setIsLoading] = useState(false);
-  const [userData, setUserData] = useState();
 
   const formSchema = z.object({
     first_name: z.string().min(2, {
@@ -55,11 +52,11 @@ export const SignUpPage = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const getOtp = (phoneNumber: string) => {
+  const getOtp = (phoneNumber: string, userData: unknown) => {
     const number = `${extractCountryCode(countryName)} ${phoneNumber}`;
     console.log("Number", number);
-    axios
-      .post(BASE_URL + "/verify/send-code", {
+    watt_connect_instance
+      .post("/verify/send-code", {
         phone_number: number,
       })
       .then((res) => {
@@ -86,8 +83,7 @@ export const SignUpPage = () => {
     if (values) {
       setIsLoading(true);
       console.log("COUNTRY CODE", countryName);
-      setUserData(values);
-      getOtp(values?.phone);
+      getOtp(values?.phone, values);
     }
   };
 

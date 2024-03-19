@@ -1,16 +1,14 @@
+import { watt_connect_instance } from "@/App";
 import { Header } from "@/components/custom/Header";
 import { MyReservationCard } from "@/components/custom/MyReservationCard";
-import photo from "../assets/images/Image.png";
 import { Button } from "@/components/ui/button";
-import downloadImage from "../assets/images/downloadImage.png";
-import completedImage from "../assets/images/completedImage.png";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import axios from "axios";
-import { BASE_URL } from "@/utils/apiEndpoint";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import photo from "../assets/images/Image.png";
+import completedImage from "../assets/images/completedImage.png";
+import downloadImage from "../assets/images/downloadImage.png";
 
 export const ReservationDetailsPage = () => {
   const navigate = useNavigate();
@@ -30,16 +28,12 @@ export const ReservationDetailsPage = () => {
 
     console.log("FORM DATA", formData);
 
-    axios
-      .put(
-        BASE_URL + `/bookings/${bookingData?.booking_id}/complete`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+    watt_connect_instance
+      .put(`/bookings/${bookingData?.booking_id}/complete`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setIsBookingCompleted(true);
         console.log("RESPONSE: Complete Booking", res?.data);

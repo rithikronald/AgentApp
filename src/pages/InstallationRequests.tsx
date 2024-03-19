@@ -1,7 +1,6 @@
+import { watt_connect_instance } from "@/App";
 import { Header } from "@/components/custom/Header";
 import { InstallationDetailsCard } from "@/components/custom/InstallationDetailsCard";
-import { BASE_URL } from "@/utils/apiEndpoint";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { BookingObjectType } from "./MyReservations";
@@ -13,8 +12,8 @@ export const InstallationRequests = () => {
   const [bookingsList, setBookingsList] = useState<BookingObjectType[]>();
 
   const getBooking = () => {
-    axios
-      .get(BASE_URL + `/agents/${agent_id}/find_bookings`)
+    watt_connect_instance
+      .get(`/agents/${agent_id}/find_bookings`)
       .then((res) => {
         console.log("RESPONSE: find bookings", res?.data);
         setBookingsList(res?.data);
@@ -26,6 +25,7 @@ export const InstallationRequests = () => {
 
   useEffect(() => {
     getBooking();
+    console.log("agent id", agent_id);
   }, []);
 
   return (

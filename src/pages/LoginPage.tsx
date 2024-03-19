@@ -1,16 +1,15 @@
+import { watt_connect_instance } from "@/App";
+import { LoaderButton } from "@/components/custom/loaderButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
-import countries from "../utils/constants/countries.json";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { BASE_URL } from "@/utils/apiEndpoint";
-import { LoaderButton } from "@/components/custom/loaderButton";
 import {
   extractCountryCode,
   retrieveNumberFromString,
 } from "@/utils/helperfunction";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import countries from "../utils/constants/countries.json";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -22,8 +21,8 @@ export const LoginPage = () => {
   const getOtp = () => {
     const number = `${extractCountryCode(countryName)} ${phoneNumber}`;
     console.log("Number", number);
-    axios
-      .post(BASE_URL + "/verify/send-code", {
+    watt_connect_instance
+      .post("/verify/send-code", {
         phone_number: number,
       })
       .then((res) => {

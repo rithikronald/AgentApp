@@ -1,9 +1,35 @@
+import { watt_connect_instance } from "@/App";
 import { Header } from "@/components/custom/Header";
 import { RequestCardRows } from "@/components/custom/RequestCardRows";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 export const ProfilePage = () => {
+  const [agentDetails, setAgentDetails] = useState();
+
+  const getBooking = () => {
+    const agent_id = localStorage.getItem("agent_id");
+    if (agent_id) {
+      watt_connect_instance
+        .get(`/agents/${agent_id}`)
+        .then((res) => {
+          console.log("RESPONSE: get Agent details", res?.data);
+          setAgentDetails(res?.data);
+        })
+        .catch((err) => {
+          console.log("ERROR: get Agent details", err);
+        });
+    } else {
+      toast.error("Agent not found, please try to login again");
+    }
+  };
+
+  useEffect(() => {
+    getBooking();
+  }, []);
+
   return (
     <div className="flex flex-1 flex-col  md:h-[70%] md:w-[50%] md:items-center">
       <Header />
@@ -16,10 +42,19 @@ export const ProfilePage = () => {
           </Button>
         </div>
         <div className="flex flex-col w-full bg-[#F8FAFC] rounded-xl p-3 mt-4">
-          <RequestCardRows title="Numéro de l’agent:" value="522558" />
-          <RequestCardRows title="Nom:" value="Edine Wilson" />
-          <RequestCardRows title="Zone de Service:" value="Paris" />
-          <RequestCardRows title="Contact:" value="+33 58 85 55 22" />
+          <RequestCardRows
+            title="Numéro de l’agent:"
+            value={localStorage.getItem("agent_id") || "NAN"}
+          />
+          <RequestCardRows
+            title="Nom:"
+            value={`${agentDetails?.first_name} ${agentDetails?.last_name}`}
+          />
+          <RequestCardRows
+            title="Zone de Service:"
+            value={agentDetails?.service_area}
+          />
+          <RequestCardRows title="Contact:" value={agentDetails?.phone} />
         </div>
         <div className="flex flex-col mt-4">
           <p className="text-black font-semibold">Stock Stock</p>

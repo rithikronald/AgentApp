@@ -1,8 +1,7 @@
+import { watt_connect_instance } from "@/App";
 import { Header } from "@/components/custom/Header";
 import { TimeLine } from "@/components/custom/TimeLine";
 import { Button } from "@/components/ui/button";
-import { BASE_URL } from "@/utils/apiEndpoint";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -10,12 +9,13 @@ import { toast } from "react-toastify";
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [agentId, setAgentId] = useState("65e5dbca4c22eb272347723c");
+  // const [agentId, setAgentId] = useState("65e5dbca4c22eb272347723c");
+  const [agentId, setAgentId] = useState("");
   const [todaysBookingList, setTodaysBookingList] = useState();
 
-  const getTodaysBooking = () => {
-    axios
-      .get(BASE_URL + `/agents/${agentId}/bookings/assigned/today`)
+  const getTodaysBooking = (id: string) => {
+    watt_connect_instance
+      .get(`/agents/${id}/bookings/assigned/today`)
       .then((res) => {
         console.log("RESPONSE: todays bookings", res?.data);
         setTodaysBookingList(res?.data);
@@ -27,8 +27,13 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem("agentId", agentId);
-    getTodaysBooking();
+    const id = localStorage.getItem("agent_id");
+    if (id) {
+      setAgentId(id);
+      getTodaysBooking(id);
+    } else {
+      toast.error("Agent not found please try to login again.");
+    }
   }, []);
 
   return (

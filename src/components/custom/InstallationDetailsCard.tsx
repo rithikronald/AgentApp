@@ -1,7 +1,6 @@
+import { watt_connect_instance } from "@/App";
 import { BookingObjectType } from "@/pages/MyReservations";
-import { BASE_URL } from "@/utils/apiEndpoint";
 import { slotMapping } from "@/utils/constants/data";
-import axios from "axios";
 import moment from "moment";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -23,12 +22,13 @@ export const InstallationDetailsCard = ({
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
 
   const confirmBooking = () => {
-    const agent_id = localStorage.getItem("agentId");
-    const booking_id = bookingData._id;
+    const agent_id = localStorage.getItem("agent_id");
+    console.log("Booking data", bookingData);
+    const booking_id = bookingData.booking_id;
     console.log("AGENT & BOOKING ID", agent_id, "  ", booking_id);
     if (agent_id && booking_id)
-      axios
-        .put(BASE_URL + `/agents/${agent_id}/assign/${booking_id}`)
+      watt_connect_instance
+        .put(`/agents/${agent_id}/assign/${booking_id}`)
         .then((res) => {
           console.log("RESPONSE: Assign booking to agent", res?.data);
           onConfirmBooking();

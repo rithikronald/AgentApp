@@ -1,10 +1,8 @@
+import { watt_connect_instance } from "@/App";
 import { Header } from "@/components/custom/Header";
 import { MyReservationCard } from "@/components/custom/MyReservationCard";
-import { BASE_URL } from "@/utils/apiEndpoint";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 export interface BookingObjectType {
   _id: string;
@@ -37,8 +35,8 @@ export const MyReservations = () => {
   const [reservationData, setReservationData] = useState<BookingObjectType[]>();
 
   const getBookings = () => {
-    axios
-      .get(BASE_URL + `/agents/${agent_id}/bookings`)
+    watt_connect_instance
+      .get(`/agents/${agent_id}/bookings`)
       .then((res) => {
         console.log("RESPONSE: agent bookings", res?.data);
         setReservationData(res?.data);

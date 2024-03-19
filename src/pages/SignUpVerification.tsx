@@ -1,9 +1,8 @@
+import { watt_connect_instance } from "@/App";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { BASE_URL } from "@/utils/apiEndpoint";
-import axios from "axios";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const SignUpVerification = () => {
@@ -14,16 +13,16 @@ export const SignUpVerification = () => {
   const [otp, setOtp] = useState("");
 
   const verifyOtp = () => {
-    axios
-      .post(
-        BASE_URL + `agents/verify/check-code/?phone=%2B${phone}&code=${otp}`,
-        {
-          userData,
-        }
-      )
+    const body = { ...userData, disabled: false };
+    console.log("body", body);
+    watt_connect_instance
+      .post(`/agents/verify/check-code/?phone=%2B${phone}&code=${otp}`, body)
       .then((res) => {
         console.log("RESPONSE", res?.data);
-        navigate("/dashboard");
+        localStorage.setItem("agent_id", res?.data?.agent_id);
+        localStorage.setItem("access_token", res?.data?.access_token);
+        localStorage.setItem("refresh_token", res?.data?.refresh_token);
+        navigate("/");
       })
       .catch((err) => {
         console.log("ERROR: GET OTP", err);
@@ -35,6 +34,10 @@ export const SignUpVerification = () => {
       verifyOtp();
     }
   };
+
+  useEffect(() => {
+    console.log("USER DATA", userData);
+  }, [userData]);
 
   return (
     <div className="flex flex-1 flex-col justify-evenly items-center md:h-[70%]">

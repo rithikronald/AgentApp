@@ -28,6 +28,22 @@ export const ProfilePage = () => {
     }
   };
 
+  const updateAgent = (data: unknown) => {
+    const agent_id = localStorage.getItem("agent_id");
+    if (agent_id) {
+      watt_connect_instance
+        .put(`/agents/${agent_id}/update`, data)
+        .then((res) => {
+          console.log("RESPONSE: update Agent details", res?.data);
+        })
+        .catch((err) => {
+          console.log("ERROR: update Agent details", err);
+        });
+    } else {
+      toast.error("Agent not found, please try to login again");
+    }
+  };
+
   useEffect(() => {
     getBooking();
   }, []);
@@ -77,9 +93,18 @@ export const ProfilePage = () => {
             </Button>
           </div>
           <div className="flex flex-col w-full bg-[#F8FAFC] rounded-xl p-3 mt-4">
-            <RequestCardRows title="Numéro de compte:" value="58858484" />
-            <RequestCardRows title="Code de la branche:" value="97869" />
-            <RequestCardRows title="Nom de la banque:" value="BNP Paribas" />
+            <RequestCardRows
+              title="Numéro de compte:"
+              value={agentDetails?.account_no}
+            />
+            <RequestCardRows
+              title="Code de la branche:"
+              value={agentDetails?.branch_code}
+            />
+            <RequestCardRows
+              title="Nom de la banque:"
+              value={agentDetails?.bank_name}
+            />
           </div>
         </div>
         <div className="flex flex-col mt-4">
@@ -111,6 +136,7 @@ export const ProfilePage = () => {
         agentData={agentDetails}
         onConfirm={(val) => {
           console.log("FINAL DATA", val);
+          updateAgent(val);
         }}
       />
     </div>

@@ -32,6 +32,18 @@ export const UpdateUserModal = ({
     console.log("Agent Data", agentData);
   }, [agentData]);
 
+  const handleChange = (fieldName: string, val: string) => {
+    setAgentDetails((prev) => {
+      console.log("PREV", prev);
+      let temp = {
+        ...prev,
+        [fieldName]: val,
+      };
+      console.log("temp", temp);
+      return temp;
+    });
+  };
+
   return (
     <Dialog
       open={openModal}
@@ -53,36 +65,63 @@ export const UpdateUserModal = ({
               <Input
                 value={agentDetails?.first_name}
                 onChange={(e) => {
-                  setAgentDetails((prev) => {
-                    console.log("PREV", prev);
-                  });
-                  console.log(e.target.value);
+                  handleChange("first_name", e.target.value);
                 }}
               />
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-sm">Prénom</p>
-              <Input value={agentDetails?.last_name} />
+              <Input
+                value={agentDetails?.last_name}
+                onChange={(e) => {
+                  handleChange("last_name", e.target.value);
+                }}
+              />
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-sm">Zone de Service</p>
-              <Input value={agentDetails?.service_area} />
+              <Input
+                value={agentDetails?.service_area}
+                onChange={(e) => {
+                  handleChange("service_area", e.target.value);
+                }}
+              />
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-sm">Contact</p>
-              <Input value={agentDetails?.phone} />
+              <Input
+                value={agentDetails?.phone}
+                onChange={(e) => {
+                  handleChange("phone", e.target.value);
+                }}
+              />
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-sm">Numéro de compte</p>
-              <Input value={agentDetails?.account_no} />
+              <Input
+                value={agentDetails?.account_no}
+                onChange={(e) => {
+                  handleChange("account_no", e.target.value);
+                }}
+              />
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-sm">Code de la branche</p>
-              <Input value={agentDetails?.branch_code} />
+              <Input
+                value={agentDetails?.branch_code}
+                onChange={(e) => {
+                  handleChange("branch_code", e.target.value);
+                }}
+              />
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-sm">Nom de la banque</p>
-              <Input value={agentDetails?.bank_name} />
+              <Input
+                value={agentDetails?.bank_name}
+                onChange={(e) => {
+                  handleChange("bank_name", e.target.value);
+                }}
+              />
             </div>
           </div>
         ) : (
@@ -99,13 +138,9 @@ export const UpdateUserModal = ({
 
         <DialogFooter className="flex justify-evenly">
           <DialogClose asChild>
-            <Button type="submit" variant={"outline"}>
-              Annuler annuler
-            </Button>
+            <Button variant={"outline"}>Annuler annuler</Button>
           </DialogClose>
-          <Button onClick={() => onConfirm(agentData)} type="submit">
-            Mise à jour
-          </Button>
+          <Button onClick={() => onConfirm(agentDetails)}>Mise à jour</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

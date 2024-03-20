@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { BASE_URL } from "./utils/apiEndpoint";
 import { Bars } from "react-loader-spinner";
+import { UpdatePhoneVerification } from "./pages/UpdatePhoneVerification";
 
 export const watt_connect_instance = axios.create({
   baseURL: BASE_URL,
@@ -64,6 +65,10 @@ const routes = [
   {
     path: "/profile",
     element: <ProfilePage />,
+  },
+  {
+    path: "/update_phone",
+    element: <UpdatePhoneVerification />,
   },
 ];
 

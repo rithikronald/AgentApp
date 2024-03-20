@@ -11,6 +11,7 @@ import {
 import { Input } from "../ui/input";
 import { useEffect, useState } from "react";
 import { Bars } from "react-loader-spinner";
+import { toast } from "react-toastify";
 
 interface UpdateUserModalProps {
   openModal: boolean;
@@ -27,6 +28,18 @@ export const UpdateUserModal = ({
 }: UpdateUserModalProps) => {
   const [agentDetails, setAgentDetails] = useState();
 
+  function validatePhoneNumber(phoneNumber) {
+    // Regular expression to match the format +XXXXXXXXXX
+    var regex = /^\+\d{10,}$/;
+
+    // Check if the phone number matches the regular expression
+    if (regex.test(phoneNumber)) {
+      return true; // Valid phone number
+    } else {
+      return false; // Invalid phone number
+    }
+  }
+
   useEffect(() => {
     setAgentDetails(agentData);
     console.log("Agent Data", agentData);
@@ -34,14 +47,24 @@ export const UpdateUserModal = ({
 
   const handleChange = (fieldName: string, val: string) => {
     setAgentDetails((prev) => {
-      console.log("PREV", prev);
       let temp = {
         ...prev,
         [fieldName]: val,
       };
-      console.log("temp", temp);
       return temp;
     });
+  };
+
+  const validation = () => {
+    if (agentData?.phone != agentDetails?.phone) {
+      if (validatePhoneNumber(agentDetails.phone)) {
+        onConfirm({ ...agentDetails, new_phone: agentDetails?.phone });
+      } else {
+        toast.error("Please enter a valid phone number");
+      }
+    } else {
+      onConfirm(agentDetails);
+    }
   };
 
   return (
@@ -140,7 +163,7 @@ export const UpdateUserModal = ({
           <DialogClose asChild>
             <Button variant={"outline"}>Annuler annuler</Button>
           </DialogClose>
-          <Button onClick={() => onConfirm(agentDetails)}>Mise à jour</Button>
+          <Button onClick={validation}>Mise à jour</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

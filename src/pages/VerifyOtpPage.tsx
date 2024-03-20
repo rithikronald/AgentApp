@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const VerifyOtpPage = () => {
   const navigate = useNavigate();
@@ -20,13 +21,21 @@ export const VerifyOtpPage = () => {
       .post(`/agents/verify/check-code/?phone=%2B${phone}&code=${otp}`)
       .then((res) => {
         console.log("RESPONSE", res?.data);
-        watt_connect_instance.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${res?.data?.access_token}`;
-        localStorage.setItem("agent_id", res?.data?.agent_id);
-        localStorage.setItem("access_token", res?.data?.access_token);
-        localStorage.setItem("refresh_token", res?.data?.refresh_token);
-        navigate("/");
+        if (
+          res?.data?.message == "verification failed" ||
+          res?.data?.message ==
+            "No agent data provided and no existing agent found"
+        ) {
+          toast.error("User not found");
+        } else {
+          watt_connect_instance.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${res?.data?.access_token}`;
+          localStorage.setItem("agent_id", res?.data?.agent_id);
+          localStorage.setItem("access_token", res?.data?.access_token);
+          localStorage.setItem("refresh_token", res?.data?.refresh_token);
+          navigate("/");
+        }
       })
       .catch((err) => {
         console.log("ERROR: GET OTP", err);

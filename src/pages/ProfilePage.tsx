@@ -5,9 +5,11 @@ import { UpdateUserModal } from "@/components/custom/UpdateUserModal";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const ProfilePage = () => {
+  const navigate = useNavigate();
   const [agentDetails, setAgentDetails] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -35,6 +37,14 @@ export const ProfilePage = () => {
         .put(`/agents/${agent_id}/update`, data)
         .then((res) => {
           console.log("RESPONSE: update Agent details", res?.data);
+          setIsModalOpen(false);
+          if (res?.data?.new_phone) {
+            navigate("/update_phone", {
+              state: {
+                phone: data?.phone,
+              },
+            });
+          }
         })
         .catch((err) => {
           console.log("ERROR: update Agent details", err);

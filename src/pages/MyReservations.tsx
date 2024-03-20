@@ -66,6 +66,7 @@ export const MyReservations = () => {
                 key={index}
                 showSwitch={true}
                 data={item}
+                agent_id={agent_id}
                 onClick={() =>
                   navigate("/reservation_details", {
                     state: {

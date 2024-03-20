@@ -42,14 +42,25 @@ export const ReservationCompletedCard = ({
               <StarRatingComponent
                 name="rate1"
                 starCount={5}
-                value={4}
-                onStarClick={() => {}}
+                value={bookingData?.rating || 0}
+                // onStarClick={() => {}}
               />
             }
           />
           <RequestCardRows
             title="Statut du paiement:"
-            value="payé, en attente, contacter le Support"
+            value={
+              bookingData?.payment_status == 1
+                ? "en attente"
+                : bookingData?.payment_status == 2
+                ? "contacter le Support"
+                : "payé"
+            }
+            // value="payé, en attente, contacter le Support"
+          />
+          <RequestCardRows
+            title="retour:"
+            value={bookingData?.feedback || "None"}
           />
         </div>
       </div>

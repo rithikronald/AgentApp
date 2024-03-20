@@ -20,6 +20,9 @@ export const VerifyOtpPage = () => {
       .post(`/agents/verify/check-code/?phone=%2B${phone}&code=${otp}`)
       .then((res) => {
         console.log("RESPONSE", res?.data);
+        watt_connect_instance.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${res?.data?.access_token}`;
         localStorage.setItem("agent_id", res?.data?.agent_id);
         localStorage.setItem("access_token", res?.data?.access_token);
         localStorage.setItem("refresh_token", res?.data?.refresh_token);

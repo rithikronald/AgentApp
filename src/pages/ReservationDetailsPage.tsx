@@ -23,7 +23,7 @@ export const ReservationDetailsPage = () => {
     const formData = new FormData();
     images?.forEach((image, index) => {
       const file = new File([image], image.name, { type: image.type });
-      formData.append("image", file);
+      formData.append("images", file);
     });
 
     console.log("FORM DATA", formData);

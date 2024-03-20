@@ -17,6 +17,7 @@ export const CompletedReservations = () => {
         .get(`/agents/${agent_id}/bookings/completed`)
         .then((res) => {
           console.log("RESPONSE: Completed Booking", res?.data);
+          setBookingsList(res?.data);
         })
         .catch((err) => {
           console.log("ERROR: Completed Booking", err);

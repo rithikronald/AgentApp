@@ -99,7 +99,7 @@ function App() {
       // navigate("/");
       setIsLoading(false);
     } else {
-      navigate("/login");
+      // navigate("/login");
       setIsLoading(false);
     }
   }

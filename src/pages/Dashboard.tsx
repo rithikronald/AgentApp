@@ -11,7 +11,7 @@ export const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   // const [agentId, setAgentId] = useState("65e5dbca4c22eb272347723c");
   const [agentId, setAgentId] = useState("");
-  const [todaysBookingList, setTodaysBookingList] = useState();
+  const [todaysBookingList, setTodaysBookingList] = useState([]);
 
   const getTodaysBooking = (id: string) => {
     watt_connect_instance
@@ -86,7 +86,7 @@ export const Dashboard = () => {
       <div className="flex flex-col mt-10">
         <p className="text-black font-semibold text-2xl">Horaire du jour</p>
         <div className="flex flex-col mt-4">
-          {todaysBookingList ? (
+          {todaysBookingList.length > 0 ? (
             todaysBookingList?.map((item, index) => {
               return <TimeLine key={index} bookingData={item} />;
             })

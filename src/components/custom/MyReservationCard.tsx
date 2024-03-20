@@ -6,19 +6,38 @@ import { BookingObjectType } from "@/pages/MyReservations";
 import moment from "moment";
 import { slotMapping } from "@/utils/constants/data";
 import { useState } from "react";
+import { CancelBookingModal } from "./CancelBookingModal";
+import { watt_connect_instance } from "@/App";
+import { toast } from "react-toastify";
 
 interface MyReservationCardProps {
   data: BookingObjectType;
   showSwitch?: boolean;
   onClick?: () => void;
+  agent_id: string;
 }
 
 export const MyReservationCard = ({
   data,
   showSwitch,
   onClick,
+  agent_id,
 }: MyReservationCardProps) => {
   const [confirmStatus, setConfirmStatus] = useState(true);
+  const [openCancelationModal, setOpenCancelationModal] = useState(false);
+
+  const cancelBooking = () => {
+    watt_connect_instance
+      .put(`/agents/${agent_id}/cancel/${data?.booking_id}`)
+      .then((res) => {
+        console.log("RESPONSE: cancel booking", res?.data);
+        setOpenCancelationModal(false);
+        toast.success("Booking cancelled successfully.");
+      })
+      .catch((err) => {
+        console.log("ERROR: cancel booking", err);
+      });
+  };
 
   return (
     <div className="flex flex-col space-y-4 mt-5">
@@ -56,7 +75,12 @@ export const MyReservationCard = ({
                 <Switch
                   checked={confirmStatus}
                   onClick={() => {
-                    setConfirmStatus((prev) => !prev);
+                    setConfirmStatus((prev) => {
+                      if (prev) {
+                        setOpenCancelationModal(true);
+                      }
+                      return !prev;
+                    });
                   }}
                 />
                 <Label>Oui oui</Label>
@@ -71,6 +95,16 @@ export const MyReservationCard = ({
           )}
         </div>
       </div>
+      <CancelBookingModal
+        openModal={openCancelationModal}
+        onClose={() => {
+          setOpenCancelationModal(false);
+          setConfirmStatus(true);
+        }}
+        onConfirm={() => {
+          cancelBooking();
+        }}
+      />
     </div>
   );
 };

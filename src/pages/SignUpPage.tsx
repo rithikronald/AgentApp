@@ -57,17 +57,21 @@ export const SignUpPage = () => {
     console.log("Number", number);
     watt_connect_instance
       .post("/verify/send-code", {
-        phone_number: number,
+        phone_number: `+${retrieveNumberFromString(countryName)}${phoneNumber}`,
       })
       .then((res) => {
         console.log("RESPONSE", res?.data);
-        toast.success("Otp sent successfully.");
-        navigate("/verify_registration", {
-          state: {
-            phone: `${retrieveNumberFromString(countryName)}${phoneNumber}`,
-            userData: userData,
-          },
-        });
+        if (res?.data?.is_agent) {
+          toast.error("User already exist");
+        } else {
+          toast.success("Otp sent successfully.");
+          navigate("/verify_registration", {
+            state: {
+              phone: `${retrieveNumberFromString(countryName)}${phoneNumber}`,
+              userData: userData,
+            },
+          });
+        }
       })
       .catch((err) => {
         setIsLoading(false);

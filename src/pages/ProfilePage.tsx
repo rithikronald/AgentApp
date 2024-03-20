@@ -1,6 +1,7 @@
 import { watt_connect_instance } from "@/App";
 import { Header } from "@/components/custom/Header";
 import { RequestCardRows } from "@/components/custom/RequestCardRows";
+import { UpdateUserModal } from "@/components/custom/UpdateUserModal";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
@@ -8,6 +9,7 @@ import { toast } from "react-toastify";
 
 export const ProfilePage = () => {
   const [agentDetails, setAgentDetails] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getBooking = () => {
     const agent_id = localStorage.getItem("agent_id");
@@ -36,7 +38,12 @@ export const ProfilePage = () => {
       <div className="flex flex-col mt-6">
         <div className="flex flex-row justify-between items-center">
           <p className="text-black font-semibold">Renseignements personnels</p>
-          <Button className="h-6 rounded-full">
+          <Button
+            className="h-6 rounded-full"
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
             <FaRegEdit />
             <p className="ml-2">Edit</p>
           </Button>
@@ -57,6 +64,25 @@ export const ProfilePage = () => {
           <RequestCardRows title="Contact:" value={agentDetails?.phone} />
         </div>
         <div className="flex flex-col mt-4">
+          <div className="flex flex-row justify-between items-center">
+            <p className="text-black font-semibold">Coordonnées bancaires</p>
+            <Button
+              className="h-6 rounded-full"
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+            >
+              <FaRegEdit />
+              <p className="ml-2">Edit</p>
+            </Button>
+          </div>
+          <div className="flex flex-col w-full bg-[#F8FAFC] rounded-xl p-3 mt-4">
+            <RequestCardRows title="Numéro de compte:" value="58858484" />
+            <RequestCardRows title="Code de la branche:" value="97869" />
+            <RequestCardRows title="Nom de la banque:" value="BNP Paribas" />
+          </div>
+        </div>
+        <div className="flex flex-col mt-4">
           <p className="text-black font-semibold">Stock Stock</p>
         </div>
         <div className="flex flex-col mt-4">
@@ -75,24 +101,18 @@ export const ProfilePage = () => {
             <RequestCardRows title="Paiement en cours:" value="Nill" />
           </div>
         </div>
-        <div className="flex flex-col mt-4">
-          <div className="flex flex-row justify-between items-center">
-            <p className="text-black font-semibold">Coordonnées bancaires</p>
-            <Button className="h-6 rounded-full">
-              <FaRegEdit />
-              <p className="ml-2">Edit</p>
-            </Button>
-          </div>
-          <div className="flex flex-col w-full bg-[#F8FAFC] rounded-xl p-3 mt-4">
-            <RequestCardRows title="N ° de compte:" value="58858484" />
-            <RequestCardRows title="Code de la succursale:" value="97869" />
-            <RequestCardRows title="Nom de la banque:" value="BNP Paribas" />
-          </div>
-        </div>
         <Button className="rounded-full mt-8 w-[80%] self-center mb-10">
           Se déconnecter
         </Button>
       </div>
+      <UpdateUserModal
+        openModal={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        agentData={agentDetails}
+        onConfirm={(val) => {
+          console.log("FINAL DATA", val);
+        }}
+      />
     </div>
   );
 };

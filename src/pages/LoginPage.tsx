@@ -27,7 +27,7 @@ export const LoginPage = () => {
       })
       .then((res) => {
         console.log("RESPONSE", res?.data);
-        toast.success("Otp sent successfully.");
+        toast.success("Otp envoyé avec succès.");
         navigate("/verify_otp", {
           state: {
             phone: `${retrieveNumberFromString(countryName)}${phoneNumber}`,
@@ -36,7 +36,7 @@ export const LoginPage = () => {
       })
       .catch((err) => {
         console.log("ERROR: GET OTP", err);
-        toast.error("Error sending Otp, Please try again.");
+        toast.error("Erreur lors de l'envoi d'OTP, veuillez réessayer.");
         setIsLoading(false);
       });
   };
@@ -46,7 +46,7 @@ export const LoginPage = () => {
     if (phoneNumber.length == 10) {
       getOtp();
     } else {
-      toast.error("Please enter a valid number.");
+      toast.error("S'il vous plait, entrez un nombre valide.");
       setIsLoading(false);
     }
   };

@@ -32,7 +32,7 @@ export const MyReservationCard = ({
       .then((res) => {
         console.log("RESPONSE: cancel booking", res?.data);
         setOpenCancelationModal(false);
-        toast.success("Booking cancelled successfully.");
+        toast.success("Réservation annulée avec succès.");
       })
       .catch((err) => {
         console.log("ERROR: cancel booking", err);

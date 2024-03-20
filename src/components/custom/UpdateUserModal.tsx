@@ -60,7 +60,7 @@ export const UpdateUserModal = ({
       if (validatePhoneNumber(agentDetails.phone)) {
         onConfirm({ ...agentDetails, new_phone: agentDetails?.phone });
       } else {
-        toast.error("Please enter a valid phone number");
+        toast.error("s'il vous plaît entrer un numéro de téléphone valide");
       }
     } else {
       onConfirm(agentDetails);

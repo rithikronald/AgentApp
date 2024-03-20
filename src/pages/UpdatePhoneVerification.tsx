@@ -29,7 +29,7 @@ export const UpdatePhoneVerification = () => {
           console.log("ERROR: update Agent phone details", err);
         });
     } else {
-      toast.error("Agent not found, please try to login again");
+      toast.error("Agent introuvable, veuillez réessayer de vous connecter");
     }
   };
 

@@ -26,7 +26,7 @@ export const VerifyOtpPage = () => {
           res?.data?.message ==
             "No agent data provided and no existing agent found"
         ) {
-          toast.error("User not found");
+          toast.error("Utilisateur non trouvé");
         } else {
           watt_connect_instance.defaults.headers.common[
             "Authorization"

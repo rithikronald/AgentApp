@@ -37,11 +37,11 @@ export const ReservationDetailsPage = () => {
       .then((res) => {
         setIsBookingCompleted(true);
         console.log("RESPONSE: Complete Booking", res?.data);
-        toast.success("Booking completed successfully");
+        toast.success("Réservation terminée avec succès.");
       })
       .catch((err) => {
         console.log("ERROR: Complete Booking", err);
-        toast.error("Something went wrong, please try again.");
+        toast.error("Une erreur s'est produite. Veuillez réessayer.");
       });
   };
 

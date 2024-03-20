@@ -32,7 +32,7 @@ export const Dashboard = () => {
       setAgentId(id);
       getTodaysBooking(id);
     } else {
-      toast.error("Agent not found please try to login again.");
+      toast.error("Agent introuvable, veuillez réessayer de vous connecter");
     }
   }, []);
 

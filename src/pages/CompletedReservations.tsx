@@ -23,7 +23,7 @@ export const CompletedReservations = () => {
           console.log("ERROR: Completed Booking", err);
         });
     } else {
-      toast.error("Agent not found, please try to login again");
+      toast.error("Agent introuvable, veuillez réessayer de vous connecter");
     }
   };
 

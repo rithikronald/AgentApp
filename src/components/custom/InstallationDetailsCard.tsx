@@ -34,11 +34,11 @@ export const InstallationDetailsCard = ({
           onConfirmBooking();
           setOpenConfirmationModal(false);
           setOpenSuccessModal(true);
-          toast.success("Booking assigned successfully");
+          toast.success("Réservation attribuée avec succès");
         })
         .catch((err) => {
           console.log("ERROR: Assign booking to agent", err);
-          toast.error("Something went wrong, please try again.");
+          toast.error("Une erreur s'est produite. Veuillez réessayer.");
         });
   };
 

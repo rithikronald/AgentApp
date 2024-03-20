@@ -62,9 +62,9 @@ export const SignUpPage = () => {
       .then((res) => {
         console.log("RESPONSE", res?.data);
         if (res?.data?.is_agent) {
-          toast.error("User already exist");
+          toast.error("L'utilisateur existe déjà");
         } else {
-          toast.success("Otp sent successfully.");
+          toast.success("Otp envoyé avec succès.");
           navigate("/verify_registration", {
             state: {
               phone: `${retrieveNumberFromString(countryName)}${phoneNumber}`,
@@ -76,7 +76,7 @@ export const SignUpPage = () => {
       .catch((err) => {
         setIsLoading(false);
         console.log("ERROR: GET OTP", err);
-        toast.error("Error sending Otp, Please try again.");
+        toast.error("Erreur lors de l'envoi d'OTP, veuillez réessayer.");
       });
   };
 

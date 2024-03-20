@@ -26,7 +26,7 @@ export const ProfilePage = () => {
           console.log("ERROR: get Agent details", err);
         });
     } else {
-      toast.error("Agent not found, please try to login again");
+      toast.error("Agent introuvable, veuillez réessayer de vous connecter");
     }
   };
 
@@ -50,7 +50,7 @@ export const ProfilePage = () => {
           console.log("ERROR: update Agent details", err);
         });
     } else {
-      toast.error("Agent not found, please try to login again");
+      toast.error("Agent introuvable, veuillez réessayer de vous connecter");
     }
   };
 

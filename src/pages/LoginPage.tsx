@@ -4,19 +4,40 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   extractCountryCode,
+  fetchCity,
   retrieveNumberFromString,
 } from "@/utils/helperfunction";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import countries from "../utils/constants/countries.json";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const [phoneNumber, setPhoneNumber] = useState("8825560958");
-  // const [countryName, setCountryName] = useState("🇫🇷 (+33)");
-  const [countryName, setCountryName] = useState("🇮🇳 (+91)");
+  const [phoneNumber, setPhoneNumber] = useState();
+  const [countryName, setCountryName] = useState("🇫🇷 (+33)");
+  // const [countryName, setCountryName] = useState("🇮🇳 (+91)");
   const [isLoading, setIsLoading] = useState(false);
+
+  const getCity = async () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        console.log("POSITION", position);
+        const city = await fetchCity(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+        localStorage.setItem("city", city);
+        console.log("City", city);
+      });
+    } else {
+      console.log("Geolocation is not available in your browser.");
+    }
+  };
+
+  useEffect(() => {
+    getCity();
+  }, []);
 
   const getOtp = () => {
     const number = `${extractCountryCode(countryName)} ${phoneNumber}`;

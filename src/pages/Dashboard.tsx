@@ -2,6 +2,7 @@ import { watt_connect_instance } from "@/App";
 import { Header } from "@/components/custom/Header";
 import { TimeLine } from "@/components/custom/TimeLine";
 import { Button } from "@/components/ui/button";
+import { fetchCity } from "@/utils/helperfunction";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";

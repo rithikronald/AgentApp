@@ -22,3 +22,39 @@ export function retrieveNumberFromString(str: string) {
     return null; // Return null if no number is found
   }
 }
+
+export const decimalCheck = (val: number, decimalDigits?: number): number => {
+  if (val) {
+    if (val % 1 == 0) {
+      return val;
+    } else {
+      if (decimalDigits) {
+        return Number(val?.toFixed(decimalDigits));
+      } else {
+        return Number(val?.toFixed(1));
+      }
+    }
+  } else {
+    return 0;
+  }
+};
+
+export const fetchCity = async (lat: number, lng: number) => {
+  try {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${
+        import.meta.env.VITE_MAP_API_KEY
+      }`
+    );
+    const data = await response.json();
+    console.log("MAP DATA", data);
+    if (data.results && data.results.length > 0) {
+      const cityName = data.results[0].address_components.find((component) => {
+        return component.types.includes("locality");
+      }).long_name;
+      return cityName;
+    }
+  } catch (error) {
+    console.error("Error fetching current city:", error);
+  }
+};

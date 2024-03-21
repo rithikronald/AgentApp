@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import { ConfirmationModal } from "./ConfirmationModal";
 import { RequestCardRows } from "./RequestCardRows";
 import { SuccessModal } from "./SuccessModal";
+import { decimalCheck } from "@/utils/helperfunction";
 
 interface InstallationDetailsCardProps {
   bookingData: BookingObjectType;
@@ -67,7 +68,9 @@ export const InstallationDetailsCard = ({
         <RequestCardRows title="Contact:" value={bookingData?.phone_number} />
         <RequestCardRows
           title="Distance:"
-          value={bookingData?.distance?.toString() || "NAN"}
+          value={
+            decimalCheck(Number(bookingData?.distance)).toString() || "NAN"
+          }
         />
         <Button
           onClick={() => setOpenConfirmationModal(true)}

@@ -48,7 +48,7 @@ export const InstallationRequests = () => {
             })
           ) : (
             <p className="text-black font-semibold text-lg">
-              There are currently no booking available
+              Il n'y a actuellement aucune réservation disponible
             </p>
           )}
         </div>

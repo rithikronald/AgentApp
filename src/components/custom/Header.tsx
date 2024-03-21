@@ -17,7 +17,7 @@ export const Header = () => {
           navigate("/login");
         }}
       >
-        Log Out
+        Se déconnecter
       </Button>
     </div>
   );

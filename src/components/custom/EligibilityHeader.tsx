@@ -9,7 +9,7 @@ export const EligibilityHeader = ({ onBackPress }: EligibilityHeaderProps) => {
       <IoArrowBack onClick={onBackPress} size={30} color="#269BA3" />
       <div className="flex w-[90%] justify-center items-center">
         <p className="font-semibold text-3xl text-center">
-          Test your eligibility
+        est votre éligibilité
         </p>
       </div>
     </div>

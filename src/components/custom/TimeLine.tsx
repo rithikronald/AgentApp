@@ -19,7 +19,7 @@ export const TimeLine = ({ bookingData }: TimeLineProps) => {
       </div>
       <div className="grow pt-0.5 pb-8">
         <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
-          Booking ID: {bookingData?.booking_id}
+          Numéro de réservation: {bookingData?.booking_id}
         </h3>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
           {bookingData?.address}

@@ -60,7 +60,7 @@ export const ReservationCompletedCard = ({
           />
           <RequestCardRows
             title="retour:"
-            value={bookingData?.feedback || "None"}
+            value={bookingData?.feedback || "Aucune"}
           />
         </div>
       </div>

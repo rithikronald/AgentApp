@@ -79,7 +79,7 @@ export const Dashboard = () => {
             Réservations complétées
           </Button>
           <Button onClick={() => navigate("/profile")} className="flex h-16">
-            Profile
+            Profil
           </Button>
         </div>
       </div>
@@ -92,7 +92,7 @@ export const Dashboard = () => {
             })
           ) : (
             <p className="text-black font-semibold text-lg">
-              There are no booking assigned for today
+              Aucune réservation n'est assignée pour aujourd'hui
             </p>
           )}
         </div>

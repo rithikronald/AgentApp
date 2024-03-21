@@ -147,7 +147,7 @@ export const SignUpPage = () => {
                 render={({ field }) => (
                   <FormItem className="md:w-[49%] mt-2">
                     <FormLabel className="text-muted-foreground">
-                      Business Name
+                      Nom de l'entreprise
                     </FormLabel>
                     <FormControl>
                       <Input placeholder="Business Name" {...field} />
@@ -162,7 +162,7 @@ export const SignUpPage = () => {
                 render={({ field }) => (
                   <FormItem className="md:w-[49%] mt-2">
                     <FormLabel className="text-muted-foreground">
-                      Tax ID
+                      Numéro d'identification fiscale
                     </FormLabel>
                     <FormControl>
                       <Input placeholder="Tax ID" {...field} />
@@ -179,7 +179,7 @@ export const SignUpPage = () => {
                 render={({ field }) => (
                   <FormItem className="md:w-[49%] mt-2">
                     <FormLabel className="text-muted-foreground">
-                      Service Area
+                      Zone de service
                     </FormLabel>
                     <FormControl>
                       <Input placeholder="Service Area" {...field} />
@@ -211,7 +211,7 @@ export const SignUpPage = () => {
                 render={({ field }) => (
                   <FormItem className="md:w-[49%] mt-2">
                     <FormLabel className="text-muted-foreground">
-                      Phone
+                      Téléphone
                     </FormLabel>
                     <FormControl>
                       <div className="flex">
